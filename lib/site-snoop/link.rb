@@ -1,4 +1,4 @@
-require 'site-snoop/get'
+require 'site-snoop/http'
 module SiteSnoop
   class Link
     def self.visit(*args, &block)
@@ -13,7 +13,7 @@ module SiteSnoop
     end
     
     def visit
-      response 
+      get 
       yield(self, target_url, links_in_target_document)
     end
 
@@ -22,8 +22,9 @@ module SiteSnoop
       return @links_in_target_document if @links_in_target_document
     end
   
-    def response
-      @response ||= SiteSnoop::Get.response(target_url) 
+    def get
+      return @response, @code, @location if @response || @code || @location
+      @response, @code, @location = SiteSnoop::Http.get(target_url) 
     end
   end
 end

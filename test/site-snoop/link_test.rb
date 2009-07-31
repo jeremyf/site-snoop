@@ -3,9 +3,9 @@ require File.dirname(__FILE__) + '/../test_helper'
 class SiteSnoop::LinkTest < Test::Unit::TestCase
   def setup
     @referrer_url = TEST_URI
-    @target_url = '/hello'
+    @target_url = File.join(TEST_URI, '/hello')
     @links_at_target_url = ['/hello/world', '/hello/mom']
-    FakePage.new('/hello', :links => @links_at_target_url)
+    FakePage.new('hello', :links => @links_at_target_url)
     @link = SiteSnoop::Link.new(@target_url, @referrer_url)
   end
   def test_should_have_referrer_url

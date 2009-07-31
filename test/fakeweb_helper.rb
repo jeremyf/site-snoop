@@ -16,13 +16,13 @@ class FakePage
     @links = [options[:links]].flatten if options.has_key?(:links)
     @hrefs = [options[:hrefs]].flatten if options.has_key?(:hrefs)
     @redirect = options[:redirect] if options.has_key?(:redirect)
-    
+    @port = options[:port] || 80
     create_body
     add_to_fakeweb
   end
   
   def url
-    File.join(TEST_URI, @name)
+    File.join("#{TEST_URI}:#{@port}", @name)
   end
   
   private
@@ -41,7 +41,6 @@ class FakePage
       options[:status] = [301, "Permanently Moved"] 
       options[:location] = SPEC_DOMAIN + @redirect
     end
-
     FakeWeb.register_uri(:get, url, options)
   end
 end
